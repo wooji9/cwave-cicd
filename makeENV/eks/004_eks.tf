@@ -22,6 +22,10 @@ module "eks" {
       cluster_name = var.cluster-name
       most_recent = true
     }
+
+    aws-ebs-csi-driver = {
+      most_recent = true
+     }
   }
 
   vpc_id                   = aws_vpc.vpc.id
@@ -42,9 +46,7 @@ module "eks" {
     }
   }
 
-  aws-ebs-csi-driver = {
-    most_recent = true
-  }
+ 
 }
 
 module "vpc_cni_irsa" {
