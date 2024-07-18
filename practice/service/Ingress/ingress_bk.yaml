@@ -1,0 +1,44 @@
+#ingress.yaml
+
+#aws에만 있음. ingressClass 작성해주기
+apiVersion: networking.k8s.io/v1
+kind: IngressClass
+meteadata:
+  name: alb-ingress-class
+spec:
+  controller: ingress.k8s.aws/alb
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  annotations:
+    #LB, ingress 생성시 AWS는 annotation에 이 설정들을 해줘야함
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  labels:
+    name: ingress
+spec:
+  ingressClassName: "alb-ingress-class"
+  rules:
+  - host: nginx.duldul115.com    #nginx
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: nginx-lb
+            port: 
+              number: 80
+
+  - host: goapp.duldul115.com     #goapp
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: goapp-lb
+            port: 
+              number: 80

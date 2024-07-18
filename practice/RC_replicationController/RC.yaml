@@ -1,0 +1,24 @@
+#RC.yaml
+
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: goapp-rc
+spec:
+  #pod 5개를 띄워
+  replicas: 5
+  selector:
+    app: goapp #감시할라벨 select 
+
+  #pod를 template의 내용대로 띄워
+  template:
+    metadata:
+      name: goapp
+      labels:
+        app: goapp  #select한 라벨이 작성되어야함 
+    spec:
+      containers:
+        - name: goapp-container
+          image: dangtong/goapp
+          ports:
+            - containerPort: 8080

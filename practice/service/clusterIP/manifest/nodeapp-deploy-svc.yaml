@@ -1,0 +1,38 @@
+#nodeapp-deploy-svc.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodeapp-deploy
+spec:
+  selector:
+    matchLabels:
+      app: nodeapp-pod
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: nodeapp-pod
+    spec:
+      containers:
+      - name: nodeapp-con
+        image: dangtong/nodeapp
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+#ClusterIP 
+
+metadata:
+  name: nodeapp-service
+spec:
+  selector: #어떤 노드들에게 연결?
+    app: nodeapp-pod #라벨 app=nodeapp-pod인 pod들 연결 
+  ports:
+  - port: 8081     #ClusterIP의 Port
+    targetPort: 8080  #연결해 줄 노드들의 IP

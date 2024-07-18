@@ -1,0 +1,31 @@
+#pv.yaml
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-1
+spec:
+  capacity:
+    storage: 80Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  
+  #onpremise가 아니라 aws이므로 적어준다 
+  #(애져나 gcp는 추상화가 잘 되어있어서 kind와 문법이 동일함)
+  csi:
+    driver: ebs.csi.aws.com
+    fsType: ext4
+    volumeHandle: vol-024e8c349f80a4269 #aws ec2 describe-volumes 해서 얻은 volumeID
+
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: topology.ebs.csi.aws.com/zone
+              operator: In
+              values:
+              - ap-northeast-2a
+  

@@ -1,0 +1,19 @@
+#/code/local/cwave-k8s/pod/pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx #pod의 이름 
+  labels:
+    name: nginx
+spec:
+  containers:
+  - name: nginx #container의 이름 
+    image: nginx:1.9.1
+    resources:
+      limits: #필수로 작성하게 된 이유 : 어떤 경우든 권장 limit이 정해져 있음 
+              #control plane이 limit을 알고 있는 것은 효율성에 큰 차이를 만들어줌
+        memory: "128Mi"
+        cpu: "500m"
+      #request :최소한으로 요청하는 메모리 
+    ports:
+      - containerPort: 80 #nginx의 기본 포트 

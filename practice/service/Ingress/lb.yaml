@@ -1,0 +1,39 @@
+#lb.yaml
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-lb
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+spec:
+  type: LoadBalancer
+  selector:
+    app: nginx
+  ports:
+  - port: 80  #내가 임의로 선택 
+    targetPort: 80 #nginx의 기본 포트
+  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: goapp-lb
+  annotations:
+    service.beta.kubernetes.io/aws-load-balancer-type: external
+    service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+    service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  
+spec:
+
+  selector:
+    app: goapp
+    
+  ports:
+  - port: 80
+    #port같아도돼?
+    #서비스 서로 ip가 다르니까 상관없음
+    targetPort: 8080  #이미지를 빌드할때 goapp port를 8080이라고 정했음

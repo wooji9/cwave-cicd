@@ -1,0 +1,22 @@
+#test4-1.yaml
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test41-pod-memhigh
+  labels:
+    name: myapp
+    tier: FronEnd
+    app: apache
+spec:
+  nodeSelector:
+    memsize: "high"
+  containers:
+  - name: test41-con
+    image: bitnami/apache
+    resources:
+      limits:
+        memory: "128Mi"
+        cpu: "500m"
+    ports:
+      - containerPort: 8080
